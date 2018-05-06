@@ -1,27 +1,70 @@
-# SliderLibrary
+# Angular Slider Library
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
+Angular slider library 
 
-## Development server
+## How to use
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Navigate to the level of your package.json and type
+```typescript
+ npm install ng2-slider --save
+```
 
-## Code scaffolding
+or with yarn
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```typescript
+ yarn add ng2-slider
+```
 
-## Build
+## Using in the angular application
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Import in your module. 
 
-## Running unit tests
+```typescript
+import { SliderModule } from 'ng2-slider';
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+@NgModule({
+  imports: [
+    SliderModule
+  ]
+})
+export class AppModule { }
+```
 
-## Running end-to-end tests
+In your Html component
+```typescript
+<lib-slider [slides]="slides"></lib-slider>
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+In your TS component declare the object
+```typescript
+slides = [  
+   {  
+      "img":"http://lorempixel.com/output/animals-q-g-640-320-10.jpg",
+      "title":"<b> Some random title</b><br> example",
+      "button":{  
+         "text":"CLICK ON ME"
+      }
+   },
+   {  
+      "img":"http://lorempixel.com/output/animals-q-g-640-320-10.jpg",
+      "title":"<b> Some random title</b><br> example",
+      "button":{  
+         "text":"CLICK ON ME"
+      }
+   },
+   {  
+      "img":"http://lorempixel.com/output/animals-q-g-640-320-10.jpg",
+      "title":"<b> Some random title</b><br> example",
+      "button":{  
+         "text":"CLICK ON ME"
+      }
+   },
+   {  
+      "img":"http://lorempixel.com/output/animals-q-g-640-320-10.jpg",
+      "title":"<b> Some random title</b><br> example",
+      "button":{  
+         "text":"CLICK ON ME"
+      }
+   }
+]
+```
