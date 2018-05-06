@@ -1,0 +1,17 @@
+<section #sliderSection class="slider">
+  <div class="slide" *ngFor="let slide of slides">
+    <img [src]="slide.img" alt="">
+    <h2 [innerHtml]="slide.title"></h2>
+    <button class="btn btn-primary" type="button" (click)="clickEvent(slide)" i18n>
+      {{slide.button.text}}
+      <span class="line-1"></span>
+      <span class="line-2"></span>
+      <span class="line-3"></span>
+      <span class="line-4"></span>
+    </button>
+  </div>
+</section>
+
+<section class="bullet-container">
+  <span class="bullet" *ngFor="let x of slides; index as i;" [class.active]="i+1==currentSlidePos" (click)="setSlideWidthAnimation(currentSlidePos, i+1)"></span>
+</section>

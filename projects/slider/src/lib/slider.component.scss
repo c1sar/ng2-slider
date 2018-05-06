@@ -1,0 +1,300 @@
+$color-white: #ffffff;
+$color-primary-500: #00A5A2;
+$color-primary-700: #085E5A;
+$mobile-tablet-portrait: "(max-width: 991px)";
+$font-primary: 'montserratsemibold';
+$font-primary-thin: 'montserratlight';
+$font-secondary: 'ralewayregular';
+$font-secondary-bold: 'ralewaybold';
+@mixin font-primary {
+  font-family: $font-primary;
+  font-weight: 300;
+  font-style: normal;
+}
+
+@mixin font-primary-thin {
+  font-family: $font-primary-thin;
+  font-weight: 300;
+  font-style: normal;
+}
+
+@mixin font-secondary {
+  font-family: $font-secondary;
+  font-weight: 300;
+  font-style: normal;
+}
+
+@mixin font-secondary-bold {
+  font-family: $font-secondary-bold;
+  font-weight: 300;
+  font-style: normal;
+}
+
+:host {
+  width: 100%;
+  position: relative;
+  display: block;
+}
+
+.slider {
+  width: 100%;
+  position: relative;
+  height: 100%;
+  min-height: 600px;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+  overflow-x: hidden;
+  .slide {
+    width: 100%;
+    min-width: 100%;
+    height: 100%;
+    min-height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    user-select: none;
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+      user-select: none;
+      pointer-events: none;
+    }
+  }
+  h2 {
+    z-index: 20;
+    font-size: 46px;
+    text-align: center;
+    color: $color-white;
+    letter-spacing: 5px;
+    margin-top: 90px;
+    margin-bottom: 90px;
+    margin-left: 5px;
+    margin-right: 5px;
+    user-select: none;
+    pointer-events: none;
+    b {}
+  }
+  .btn {
+    z-index: 20;
+    user-select: none;
+  }
+}
+
+.bullet-container {
+  position: absolute;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  z-index: 2000;
+  .bullet {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin: 5px;
+    display: block;
+    background-color: $color-white;
+    opacity: 0.4;
+    cursor: pointer;
+    &.active {
+      background-color: $color-primary-500;
+    }
+    &:hover {
+      background-color: $color-primary-500;
+    }
+  }
+}
+
+@media #{$mobile-tablet-portrait} {
+  .slider {
+    .slide {
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    h2 {
+      font-size: 16px;
+      letter-spacing: 3px;
+    }
+    .btn {
+      font-size: 7.5px;
+      min-width: 150px;
+      min-height: 40px;
+      padding: 10px;
+    }
+  }
+  .bullet-container {
+    bottom: 20px;
+  }
+}
+
+$a-size: 5px;
+.btn {
+  padding: 25px 40px 25px 40px;
+  letter-spacing: 8px;
+  @include font-primary;
+  color: $color-primary-500;
+  background-color: transparent;
+  min-height: 60px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  &:hover {
+    border: none;
+    .line-1 {
+      animation: move1 1500ms infinite ease;
+    }
+    .line-2 {
+      animation: move2 1500ms infinite ease;
+    }
+    .line-3 {
+      animation: move3 1500ms infinite ease;
+    }
+    .line-4 {
+      animation: move4 1500ms infinite ease;
+    }
+  }
+  &::before {
+    content: '';
+    margin-left: 8px;
+  }
+}
+
+.btn-primary {
+  color: $color-white;
+  background-color: $color-primary-500;
+  &:hover {
+    transition: background-color 0.2s ease-in-out;
+    background-color: $color-primary-700;
+  }
+}
+
+.line-1 {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 1px;
+  height: calc(100% - #{$a-size}*2);
+  background-color: $color-white;
+  left: -#{$a-size};
+  bottom: $a-size;
+}
+
+.line-2 {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 1px;
+  width: calc(100% - #{$a-size}*2);
+  background-color: $color-white;
+  right: $a-size;
+  top: -#{$a-size};
+}
+
+.line-3 {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 1px;
+  height: calc(100% - #{$a-size}*2);
+  background-color: $color-white;
+  right: #{$a-size};
+  top: -#{$a-size};
+}
+
+.line-4 {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 1px;
+  width: calc(100% - #{$a-size}*2);
+  background-color: $color-white;
+  left: -#{$a-size};
+  bottom: #{$a-size};
+}
+
+@keyframes move1 {
+  0% {
+    height: 100%;
+    bottom: #{$a-size};
+  }
+  54% {
+    height: 0;
+    bottom: calc(100% + #{$a-size});
+  }
+  55% {
+    height: 0;
+    bottom: #{$a-size};
+  }
+  100% {
+    height: 100%;
+    bottom: #{$a-size};
+  }
+}
+
+@keyframes move2 {
+  0% {
+    width: 0;
+    left: -#{$a-size};
+  }
+  50% {
+    width: 100%;
+    left: -#{$a-size};
+  }
+  100% {
+    width: 0;
+    left: calc(100% - #{$a-size});
+  }
+}
+
+@keyframes move3 {
+  0% {
+    height: 100%;
+    top: -#{$a-size};
+  }
+  54% {
+    height: 0;
+    top: calc(100% - #{$a-size});
+  }
+  55% {
+    height: 0;
+    top: -#{$a-size};
+  }
+  100% {
+    height: 100%;
+    top: -#{$a-size};
+  }
+}
+
+@keyframes move4 {
+  0% {
+    width: 0;
+    right: #{$a-size};
+    left: auto;
+  }
+  55% {
+    width: 100%;
+    right: #{$a-size};
+    left: auto;
+  }
+  100% {
+    width: 0;
+    right: calc(100% + #{$a-size});
+    left: auto;
+  }
+}
