@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
+import {
+  Component, OnInit, Input, ElementRef, EventEmitter,
+  ViewChild, AfterViewInit, HostListener, Output
+} from '@angular/core';
 import { Slide } from './models/slide';
 import { ISliderEvent } from './models/ISliderEvent';
 
@@ -10,6 +13,7 @@ import { ISliderEvent } from './models/ISliderEvent';
 export class SliderComponent implements OnInit, AfterViewInit {
 
   @Input() slides: Slide[];
+  @Output() clickButton: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('sliderSection') sliderSection: ElementRef;
   sliderElement: HTMLElement;
@@ -35,7 +39,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
   }
 
   clickEvent(slide: Slide) {
-    console.log(slide);
+    this.clickButton.emit(slide);
   }
 
   @HostListener('mousedown', ['$event']) onMouseDown(e: MouseEvent) {

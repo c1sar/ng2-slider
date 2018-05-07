@@ -4,5 +4,7 @@ export class Slide {
   img: string = '';
   alt?: string;
   title?: string;
+  html?: string;
+  description?: string;
   button?: Button;
 }

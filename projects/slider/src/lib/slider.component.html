@@ -1,8 +1,10 @@
 <section #sliderSection class="slider">
   <div class="slide" *ngFor="let slide of slides">
     <img [src]="slide.img" alt="">
-    <h2 [innerHtml]="slide.title"></h2>
-    <button class="btn btn-primary" type="button" (click)="clickEvent(slide)" i18n>
+    <span *ngIf="slide.html" [innerHtml]="slide.html"></span>
+    <h2 *ngIf="slide.title" [innerHtml]="slide.title"></h2>
+    <p *ngIf="slide.description" [innerHtml]="slide.description"></p>
+    <button *ngIf="slide.button" class="btn btn-primary" type="button" (click)="clickEvent(slide)" i18n>
       {{slide.button.text}}
       <span class="line-1"></span>
       <span class="line-2"></span>
