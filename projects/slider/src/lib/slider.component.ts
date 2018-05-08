@@ -29,6 +29,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.slideNumber = this.slides.length;
     this.sliderElement = this.sliderSection.nativeElement as HTMLElement;
   }
 
@@ -68,12 +69,39 @@ export class SliderComponent implements OnInit, AfterViewInit {
 
   @HostListener('mouseup', ['$event']) onMouseUp(e: MouseEvent) {
     this.isDragging = false;
-    this.move(e);
+    this.posSlider.posEndX = e.clientX;
+    this.move();
   }
 
-  private move(e: MouseEvent) {
-    this.posSlider.posEndX = e.clientX;
 
+  @HostListener('touchstart', ['$event']) onTouchStart(e: TouchEvent) {
+    this.isDragging = true;
+    this.posSlider.posInitX = e.touches[0].clientX;
+    this.posSlider.scrollInit = this.sliderElement.scrollLeft;
+  }
+
+  @HostListener('touchmove', ['$event']) onTouchMove(e: TouchEvent) {
+
+    if (!this.isDragging) {
+      return;
+    }
+
+    const width = this.sliderElement.scrollWidth - this.sliderElement.clientWidth;
+    const dif = e.touches[0].clientX - this.posSlider.posInitX;
+    const newScrollLeftPosition = this.posSlider.scrollInit - dif;
+
+    if ((newScrollLeftPosition >= 0) && (newScrollLeftPosition <= width)) {
+      this.sliderElement.scrollLeft = newScrollLeftPosition;
+    }
+  }
+
+  @HostListener('touchmove', ['$event']) onTouchEnd(e: TouchEvent) {
+    this.isDragging = false;
+    this.posSlider.posEndX = e.touches[0].clientX;
+    this.move();
+  }
+
+  private move() {
     if ((this.posSlider.posEndX < this.posSlider.posInitX) && (this.currentSlidePos < this.slideNumber)) {
       this.setSlideWidthAnimation(this.currentSlidePos, this.currentSlidePos + 1);
     } else if ((this.currentSlidePos > 1) && (this.posSlider.posEndX > this.posSlider.posInitX)) {
@@ -88,15 +116,15 @@ export class SliderComponent implements OnInit, AfterViewInit {
     const c = posEnd - posInit;
     let position = 0;
     const interval = setInterval(() => {
-      if (t > 400) {
+      if (t > 380) {
         this.sliderElement.scrollLeft = posEnd;
         this.currentSlidePos = slideEnd;
         clearInterval(interval);
       }
-      position = this.easeOutSine(t, posInit, c, 400);
+      position = this.easeOutSine(t, posInit, c, 380);
       this.sliderElement.scrollLeft = position;
-      t = t + 10;
-    }, 10)
+      t = t + 5;
+    }, 5)
   }
 
   easeOutSine(t, b, c, d) {

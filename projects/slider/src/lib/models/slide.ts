@@ -7,4 +7,5 @@ export class Slide {
   html?: string;
   description?: string;
   button?: Button;
+  className?: string;
 }

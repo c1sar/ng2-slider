@@ -1,5 +1,5 @@
 <section #sliderSection class="slider">
-  <div class="slide" *ngFor="let slide of slides">
+  <div [class]="(slide.className) ? 'slide ' + slide.className : 'slide'" *ngFor="let slide of slides">
     <img [src]="slide.img" alt="">
     <span *ngIf="slide.html" [innerHtml]="slide.html"></span>
     <h2 *ngIf="slide.title" [innerHtml]="slide.title"></h2>
