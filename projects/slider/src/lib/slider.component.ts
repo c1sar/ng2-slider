@@ -88,6 +88,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
 
     const width = this.sliderElement.scrollWidth - this.sliderElement.clientWidth;
     const dif = e.touches[0].clientX - this.posSlider.posInitX;
+    this.posSlider.posEndX = e.touches[0].clientX;
     const newScrollLeftPosition = this.posSlider.scrollInit - dif;
 
     if ((newScrollLeftPosition >= 0) && (newScrollLeftPosition <= width)) {
@@ -95,9 +96,8 @@ export class SliderComponent implements OnInit, AfterViewInit {
     }
   }
 
-  @HostListener('touchmove', ['$event']) onTouchEnd(e: TouchEvent) {
+  @HostListener('touchend', ['$event']) onTouchEnd(e: TouchEvent) {
     this.isDragging = false;
-    this.posSlider.posEndX = e.touches[0].clientX;
     this.move();
   }
 
