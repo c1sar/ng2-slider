@@ -1,6 +1,17 @@
 {
   "name": "ng2-slider",
-  "version": "0.2.0",
+  "version": "0.3.0",
+  "author": "c1sar",
+  "description": "Angular 6 Simple slider",
+  "keywords": ["Angular 6", "angular", "slider"],
+  "bugs": {
+    "url": "https://github.com/c1sar/ng2-slider/issues"
+  },
+  "homepage": "https://github.com/c1sar/ng2-slider/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/c1sar/ng2-slider.git"
+  },
   "private": false,
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
