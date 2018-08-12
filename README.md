@@ -37,7 +37,7 @@ In your Html component
 
 In your TS component declare the object
 ```typescript
-slides = [  
+slides: ISlide[] = [  
    {  
       "img":"http://lorempixel.com/output/animals-q-g-640-320-10.jpg",
       "title":"<b> Some random title</b><br> example",
@@ -67,4 +67,9 @@ slides = [
       }
    }
 ]
+```
+You can use square bullets
+
+```typescript
+<lib-slider [slides]="slides" [squareBullets]="true"></lib-slider>
 ```

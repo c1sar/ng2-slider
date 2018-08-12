@@ -16,6 +16,7 @@ import { ISliderEvent } from './models/ISliderEvent';
 export class SliderComponent implements OnInit, AfterViewInit {
 
   @Input() slides: ISlide[];
+  @Input() squareBullets: boolean;
   @Output() clickButton: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('sliderSection') sliderSection: ElementRef;
@@ -168,7 +169,8 @@ export class SliderComponent implements OnInit, AfterViewInit {
     if (e.target) {
       const element = e.target as HTMLElement;
       if ((element.className === 'bullet') || (element.className === 'bullet-container')
-      || (element.className === 'bullet active')) {
+      || (element.className === 'bullet active') || (element.className === 'bullet square')
+      || (element.className === 'bullet square active')) {
         return true;
       }
     }

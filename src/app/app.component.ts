@@ -18,12 +18,12 @@ export class AppComponent {
       incididunt ut labore et dolore magna aliqua.`,
     },
     {
-      img: 'assets/slider-2.jpg',
+      img: 'assets/slider-3.jpg',
       title: 'Quis autem vel eum iure reprehenderit',
       description: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium',
     },
     {
-      img: 'assets/slider-3.jpg',
+      img: 'assets/slider-2.jpg',
       title: 'Ut enim ad minima veniam',
       button: {
         url: 'https://www.google.com/',

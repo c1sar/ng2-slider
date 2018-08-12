@@ -1,5 +1,5 @@
 $color-white: #ffffff;
-$color-primary-500: #00A5A2;
+$color-primary-500: #00c4ad;
 $color-primary-700: #085E5A;
 $mobile-tablet-portrait: "(max-width: 991px)";
 
@@ -86,9 +86,18 @@ $mobile-tablet-portrait: "(max-width: 991px)";
     display: block;
     background-color: $color-white;
     transition: background-color 0.2s ease-out;
-    opacity: 0.4;
+    opacity: 0.3;
     cursor: pointer;
+
+    &.square {
+      max-width: 12.5rem;
+      width: 12.5vw;
+      border-radius: 0;
+      height: 0.3125rem;
+    }
+
     &.active {
+      opacity: 1;
       background-color: $color-primary-500;
     }
     &:hover {
@@ -135,7 +144,7 @@ $mobile-tablet-portrait: "(max-width: 991px)";
   }
 }
 
-$a-size: 0.3125rem;
+$a-size: 0.0063rem;
 .btn {
   padding: 1.5625rem 2.5rem 1.5625rem 2.5rem;
   letter-spacing: 0.5rem;
@@ -173,20 +182,11 @@ $a-size: 0.3125rem;
   }
 }
 
-.btn-primary {
-  color: $color-white;
-  background-color: $color-primary-500;
-  &:hover {
-    transition: background-color 0.2s ease-in-out;
-    background-color: $color-primary-700;
-  }
-}
-
 .line-1 {
   content: "";
   display: block;
   position: absolute;
-  width: 0.0625rem;
+  width: 0.1875rem;
   height: calc(100% - #{$a-size}*2);
   background-color: $color-white;
   left: -#{$a-size};
@@ -197,7 +197,7 @@ $a-size: 0.3125rem;
   content: "";
   display: block;
   position: absolute;
-  height: 0.0625rem;
+  height: 0.1875rem;
   width: calc(100% - #{$a-size}*2);
   background-color: $color-white;
   right: $a-size;
@@ -208,7 +208,7 @@ $a-size: 0.3125rem;
   content: "";
   display: block;
   position: absolute;
-  width: 0.0625rem;
+  width: 0.1875rem;
   height: calc(100% - #{$a-size}*2);
   background-color: $color-white;
   right: #{$a-size};
@@ -219,12 +219,27 @@ $a-size: 0.3125rem;
   content: "";
   display: block;
   position: absolute;
-  height: 0.0625rem;
+  height: 0.1875rem;
   width: calc(100% - #{$a-size}*2);
   background-color: $color-white;
   left: -#{$a-size};
   bottom: #{$a-size};
 }
+
+.btn-primary {
+  color: $color-white;
+  background-color: transparent;
+  &:hover {
+    transition: background-color 0.2s ease-in-out;
+    background-color: transparent;
+  }
+  
+  .line-1, .line-2, .line-3, .line-4 {
+    background-color: $color-primary-500;
+  }
+}
+
+
 
 @keyframes move1 {
   0% {
