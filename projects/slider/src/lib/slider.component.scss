@@ -75,6 +75,7 @@ $mobile-tablet-portrait: "(max-width: 991px)";
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  user-select: none;
   z-index: 2000;
   .bullet {
     width: 0.5rem;
