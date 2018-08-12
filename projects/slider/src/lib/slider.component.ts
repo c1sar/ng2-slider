@@ -94,7 +94,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
   }
 
 
-  @HostListener('touchstart', ['$event']) onTouchStart(e: TouchEvent) {
+  @HostListener('touchstart', ['$event']) onTouchStart(e) {
     document.getSelection().empty();
     if (this.blocked) {
       return;
@@ -104,7 +104,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
     this.posSlider.scrollInit = this.sliderElement.scrollLeft;
   }
 
-  @HostListener('touchmove', ['$event']) onTouchMove(e: TouchEvent) {
+  @HostListener('touchmove', ['$event']) onTouchMove(e) {
     if ((!this.isDragging) || (this.blocked)) {
       return;
     }
@@ -119,7 +119,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
     }
   }
 
-  @HostListener('touchend', ['$event']) onTouchEnd(e: TouchEvent) {
+  @HostListener('touchend', ['$event']) onTouchEnd(e) {
     if ((this.blocked) || (this.validateElementBullet(e))) {
       return;
     }
