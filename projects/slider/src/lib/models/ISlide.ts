@@ -1,4 +1,4 @@
-import { IButton } from "./IButton";
+import { IButton } from './IButton';
 
 export interface ISlide {
   img: string;

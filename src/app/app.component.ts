@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ISlide } from 'projects/slider/src/lib/models/ISlide';
 
 @Component({
   selector: 'app-root',
@@ -7,25 +8,27 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  slides = [
+  slides: ISlide[] = [
     {
-      img: "http://via.placeholder.com/1200x900",
-      title: "Lorem ipsum dolor sit amet, consectetur.",
-      html: "<i class='dd-desktop'></i>",
+      img: 'assets/slider-1.jpg',
+      title: 'Lorem ipsum dolor sit amet, consectetur.',
+      html: '<i class=\'dd-desktop\'></i>',
       className: 'test-class',
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua.`,
     },
     {
-      img: "http://via.placeholder.com/1200x900",
-      title: "Quis autem vel eum iure reprehenderit",
-      description: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium",
+      img: 'assets/slider-2.jpg',
+      title: 'Quis autem vel eum iure reprehenderit',
+      description: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium',
     },
     {
-      img: "http://via.placeholder.com/1200x900",
-      title: "Ut enim ad minima veniam",
+      img: 'assets/slider-3.jpg',
+      title: 'Ut enim ad minima veniam',
       button: {
-        text: "Excepteur"
+        url: 'https://www.google.com/',
+        text: 'Excepteur'
       }
     }
-  ]
+  ];
 }
