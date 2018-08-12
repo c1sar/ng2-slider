@@ -105,6 +105,13 @@ export class SliderComponent implements OnInit, AfterViewInit {
   }
 
   private move() {
+    const minMovement = this.sliderElement.clientWidth * 0.20;
+
+    if (Math.abs(this.posSlider.posEndX - this.posSlider.posInitX) < minMovement) {
+      this.setSlideWidthAnimation(this.currentSlidePos, this.currentSlidePos);
+      return;
+    }
+
     if ((this.posSlider.posEndX < this.posSlider.posInitX) && (this.currentSlidePos < this.slideNumber)) {
       this.setSlideWidthAnimation(this.currentSlidePos, this.currentSlidePos + 1);
     } else if ((this.currentSlidePos > 1) && (this.posSlider.posEndX > this.posSlider.posInitX)) {
