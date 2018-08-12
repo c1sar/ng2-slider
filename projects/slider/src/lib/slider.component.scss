@@ -2,33 +2,7 @@ $color-white: #ffffff;
 $color-primary-500: #00A5A2;
 $color-primary-700: #085E5A;
 $mobile-tablet-portrait: "(max-width: 991px)";
-$font-primary: 'montserratsemibold';
-$font-primary-thin: 'montserratlight';
-$font-secondary: 'ralewayregular';
-$font-secondary-bold: 'ralewaybold';
-@mixin font-primary {
-  font-family: $font-primary;
-  font-weight: 300;
-  font-style: normal;
-}
 
-@mixin font-primary-thin {
-  font-family: $font-primary-thin;
-  font-weight: 300;
-  font-style: normal;
-}
-
-@mixin font-secondary {
-  font-family: $font-secondary;
-  font-weight: 300;
-  font-style: normal;
-}
-
-@mixin font-secondary-bold {
-  font-family: $font-secondary-bold;
-  font-weight: 300;
-  font-style: normal;
-}
 
 :host {
   width: 100%;
@@ -78,14 +52,13 @@ $font-secondary-bold: 'ralewaybold';
     margin-right: 5px;
     user-select: none;
     pointer-events: none;
-    b {}
   }
   p {
     margin: -60px 38px 10px 38px;
     z-index: 20;
     font-size: 20px;
     color: $color-white;
-    @include font-secondary;
+    font-family: inherit;
     line-height: 20px;
     text-align: center;
   }
@@ -153,7 +126,7 @@ $a-size: 5px;
 .btn {
   padding: 25px 40px 25px 40px;
   letter-spacing: 8px;
-  @include font-primary;
+  font-family: inherit;
   color: $color-primary-500;
   background-color: transparent;
   min-height: 60px;

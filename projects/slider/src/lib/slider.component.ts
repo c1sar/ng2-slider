@@ -1,8 +1,11 @@
+// Angular
 import {
   Component, OnInit, Input, ElementRef, EventEmitter,
   ViewChild, AfterViewInit, HostListener, Output
 } from '@angular/core';
-import { Slide } from './models/slide';
+
+// Models
+import { ISlide } from './models/ISlide';
 import { ISliderEvent } from './models/ISliderEvent';
 
 @Component({
@@ -12,7 +15,7 @@ import { ISliderEvent } from './models/ISliderEvent';
 })
 export class SliderComponent implements OnInit, AfterViewInit {
 
-  @Input() slides: Slide[];
+  @Input() slides: ISlide[];
   @Output() clickButton: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('sliderSection') sliderSection: ElementRef;
@@ -39,7 +42,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
     this.currentSlidePos = numberSlide;
   }
 
-  clickEvent(slide: Slide) {
+  clickEvent(slide: ISlide) {
     this.clickButton.emit(slide);
   }
 

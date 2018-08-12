@@ -1,11 +1,11 @@
-import { Button } from "./button";
+import { IButton } from "./IButton";
 
-export class Slide {
-  img: string = '';
+export interface ISlide {
+  img: string;
   alt?: string;
   title?: string;
   html?: string;
   description?: string;
-  button?: Button;
+  button?: IButton;
   className?: string;
 }
