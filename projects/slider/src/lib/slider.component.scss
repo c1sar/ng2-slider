@@ -78,12 +78,13 @@ $mobile-tablet-portrait: "(max-width: 991px)";
   user-select: none;
   z-index: 2000;
   .bullet {
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 0.75rem;
+    height: 0.75rem;
     border-radius: 50%;
-    margin: 0.3125rem;
+    margin: 0.546875rem;
     display: block;
     background-color: $color-white;
+    transition: background-color 0.2s ease-out;
     opacity: 0.4;
     cursor: pointer;
     &.active {
@@ -91,6 +92,15 @@ $mobile-tablet-portrait: "(max-width: 991px)";
     }
     &:hover {
       background-color: $color-primary-500;
+    }
+    @media (hover: none) {
+      &:hover { 
+        background-color: $color-white; 
+      }
+
+      &.active {
+        background-color: $color-primary-500;
+      }
     }
   }
 }

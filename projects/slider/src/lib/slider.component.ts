@@ -38,7 +38,6 @@ export class SliderComponent implements OnInit, AfterViewInit {
   }
 
   setSlide(numberSlide: number) {
-    console.log('set slider');
     const width = this.sliderElement.clientWidth;
     this.sliderElement.scrollLeft = width * (numberSlide - 1);
     this.currentSlidePos = numberSlide;
@@ -58,7 +57,6 @@ export class SliderComponent implements OnInit, AfterViewInit {
       this.blocked = true;
       return;
     }
-    console.log('mousedown');
     this.isDragging = true;
     this.posSlider.posInitX = e.clientX;
   }
@@ -67,7 +65,6 @@ export class SliderComponent implements OnInit, AfterViewInit {
     if ((!this.isDragging) || (this.blocked)) {
       return;
     }
-    console.log('mousemove');
 
     const width = this.sliderElement.scrollWidth - this.sliderElement.clientWidth;
     const newScrollLeftPosition = this.sliderElement.scrollLeft - e.movementX;
@@ -78,15 +75,11 @@ export class SliderComponent implements OnInit, AfterViewInit {
   }
 
   @HostListener('mouseout', ['$event']) onMouseOut(e: MouseEvent) {
-    console.log('mouseout');
-    console.log(e);
     if ((this.blocked) || (this.validateElementBullet(e)) || (e.relatedTarget == null)
     || ((e.relatedTarget as HTMLElement).className === 'bullet-container')
     ) {
-      console.log('rechazado');
       return;
     }
-    console.log('permitido');
     this.isDragging = false;
     this.setSlide(this.currentSlidePos);
   }
@@ -102,7 +95,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
 
 
   @HostListener('touchstart', ['$event']) onTouchStart(e: TouchEvent) {
-    console.log('touchstart');
+    document.getSelection().empty();
     if (this.blocked) {
       return;
     }
@@ -112,7 +105,6 @@ export class SliderComponent implements OnInit, AfterViewInit {
   }
 
   @HostListener('touchmove', ['$event']) onTouchMove(e: TouchEvent) {
-    console.log('touchmove');
     if ((!this.isDragging) || (this.blocked)) {
       return;
     }
@@ -128,8 +120,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
   }
 
   @HostListener('touchend', ['$event']) onTouchEnd(e: TouchEvent) {
-    console.log('touchend');
-    if (this.blocked) {
+    if ((this.blocked) || (this.validateElementBullet(e))) {
       return;
     }
     this.isDragging = false;
@@ -168,14 +159,6 @@ export class SliderComponent implements OnInit, AfterViewInit {
       t = t + 5;
     }, 5);
   }
-
-  // setSlider(event: Event, slideInit: number, slideEnd: number): void {
-  //   this.isDragging = true;
-  //   const posEnd = this.sliderElement.clientWidth * (slideEnd - 1);
-  //   this.sliderElement.scrollLeft = posEnd;
-  //   this.currentSlidePos = slideEnd;
-  //   this.isDragging = false;
-  // }
 
   easeOutSine(t, b, c, d) {
     return c * Math.sin(t / d * (Math.PI / 2)) + b;
