@@ -1,9 +1,10 @@
 <section #sliderSection class="slider">
-  <div [class]="(slide.className) ? 'slide ' + slide.className : 'slide'" *ngFor="let slide of slides">
-    <img [src]="slide.img" alt="">
+  <div [class]="(slide.className) ? 'slide ' + slide.className : 'slide'"
+    *ngFor="let slide of slides"
+    [style.background-image]="'url('+slide.img+')'">
     <span *ngIf="slide.html" [innerHtml]="slide.html"></span>
-    <h2 *ngIf="slide.title" [innerHtml]="slide.title"></h2>
-    <p *ngIf="slide.description" [innerHtml]="slide.description"></p>
+    <h2 *ngIf="slide.title" [innerHtml]="slide.title" [class.h2-no-button]="!slide.button && !slide.description"></h2>
+    <p *ngIf="slide.description" [class.p-no-button]="!slide.button" [innerHtml]="slide.description"></p>
     <button *ngIf="slide.button" class="btn btn-primary" type="button" (click)="clickEvent(slide)" i18n>
       {{slide.button.text}}
       <span class="line-1"></span>
@@ -15,7 +16,7 @@
 </section>
 
 <section class="bullet-container">
-  <span class="bullet" *ngFor="let x of slides; index as i;"  
+  <span class="bullet" *ngFor="let x of slides; index as i;"
   [class.square]="squareBullets"
   [class.active]="i+1==currentSlidePos" (click)="setSlide(i+1)"></span>
 </section>

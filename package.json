@@ -3,7 +3,13 @@
   "version": "1.0.1",
   "author": "c1sar",
   "description": "Angular 6 Simple slider",
-  "keywords": ["Angular 6", "angular", "slider", "slide", "c1sar"],
+  "keywords": [
+    "Angular 6",
+    "angular",
+    "slider",
+    "slide",
+    "c1sar"
+  ],
   "bugs": {
     "url": "https://github.com/c1sar/ng2-slider/issues"
   },
