@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ISlide } from 'projects/slider/src/lib/models/ISlide';
+import { IOptions } from 'projects/slider/src/lib/models/IOptions';
 
 @Component({
   selector: 'app-root',
@@ -31,4 +32,9 @@ export class AppComponent {
       }
     }
   ];
+
+  option: IOptions = {
+    animation: 'fixed'
+  };
+
 }

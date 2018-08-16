@@ -1,7 +1,9 @@
 <section #sliderSection class="slider">
   <div [class]="(slide.className) ? 'slide ' + slide.className : 'slide'"
     *ngFor="let slide of slides"
-    [style.background-image]="'url('+slide.img+')'">
+    [style.background-image]="'url('+slide.img+')'"
+    [style.background-attachment]="option.animation"
+    >
     <span *ngIf="slide.html" [innerHtml]="slide.html"></span>
     <h2 *ngIf="slide.title" [innerHtml]="slide.title" [class.h2-no-button]="!slide.button && !slide.description"></h2>
     <p *ngIf="slide.description" [class.p-no-button]="!slide.button" [innerHtml]="slide.description"></p>

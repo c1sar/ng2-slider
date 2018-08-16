@@ -7,6 +7,7 @@ import {
 // Models
 import { ISlide } from './models/ISlide';
 import { ISliderEvent } from './models/ISliderEvent';
+import { IOptions } from './models/IOptions';
 
 @Component({
   selector: 'lib-slider',
@@ -17,6 +18,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
 
   @Input() slides: ISlide[];
   @Input() squareBullets: boolean;
+  @Input() option: IOptions = { animation: null };
   @Output() clickButton: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('sliderSection') sliderSection: ElementRef;
@@ -52,20 +54,26 @@ export class SliderComponent implements OnInit, AfterViewInit {
   }
 
   @HostListener('mousedown', ['$event']) onMouseDown(e: MouseEvent) {
+    console.log('mousedown');
     document.getSelection().empty();
     if (this.validateElementBullet(e)) {
       e.preventDefault();
       this.blocked = true;
       return;
     }
+    console.log('mousedown-2');
+    this.blocked = false;
     this.isDragging = true;
     this.posSlider.posInitX = e.clientX;
   }
 
   @HostListener('mousemove', ['$event']) mouseMove(e: MouseEvent) {
+    console.log('mousemove-1');
+    console.log(this.blocked);
     if ((!this.isDragging) || (this.blocked)) {
       return;
     }
+    console.log('mousemove-2');
 
     const width = this.sliderElement.scrollWidth - this.sliderElement.clientWidth;
     const newScrollLeftPosition = this.sliderElement.scrollLeft - e.movementX;
@@ -129,7 +137,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
   }
 
   private move() {
-    const minMovement = this.sliderElement.clientWidth * 0.20;
+    const minMovement = this.sliderElement.clientWidth * 0.18;
 
     if (Math.abs(this.posSlider.posEndX - this.posSlider.posInitX) < minMovement) {
       this.setSlideWidthAnimation(this.currentSlidePos, this.currentSlidePos);
