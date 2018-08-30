@@ -20,5 +20,5 @@
 <section class="bullet-container">
   <span class="bullet" *ngFor="let x of slides; index as i;"
   [class.square]="squareBullets"
-  [class.active]="i+1==currentSlidePos" (click)="setSlide(i+1)"></span>
+  [class.active]="i+1==currentSlidePos" (click)="setSlideWidthAnimation(i+1)"></span>
 </section>

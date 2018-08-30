@@ -85,7 +85,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
       return;
     }
     this.isDragging = false;
-    this.setSlide(this.currentSlidePos);
+    this.setSlideWidthAnimation(this.currentSlidePos);
   }
 
   @HostListener('mouseup', ['$event']) onMouseUp(e: MouseEvent) {
@@ -135,18 +135,18 @@ export class SliderComponent implements OnInit, AfterViewInit {
     const minMovement = this.sliderElement.clientWidth * 0.18;
 
     if (Math.abs(this.posSlider.posEndX - this.posSlider.posInitX) < minMovement) {
-      this.setSlideWidthAnimation(this.currentSlidePos, this.currentSlidePos);
+      this.setSlideWidthAnimation(this.currentSlidePos);
       return;
     }
 
     if ((this.posSlider.posEndX < this.posSlider.posInitX) && (this.currentSlidePos < this.slideNumber)) {
-      this.setSlideWidthAnimation(this.currentSlidePos, this.currentSlidePos + 1);
+      this.setSlideWidthAnimation(this.currentSlidePos + 1);
     } else if ((this.currentSlidePos > 1) && (this.posSlider.posEndX > this.posSlider.posInitX)) {
-      this.setSlideWidthAnimation(this.currentSlidePos, this.currentSlidePos - 1);
+      this.setSlideWidthAnimation(this.currentSlidePos - 1);
     }
   }
 
-  setSlideWidthAnimation(slideInit, slideEnd) {
+  setSlideWidthAnimation(slideEnd) {
     let t = 0;
     const posInit = this.sliderElement.scrollLeft;
     const posEnd = this.sliderElement.clientWidth * (slideEnd - 1);
