@@ -156,6 +156,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
       if (t > 380) {
         this.sliderElement.scrollLeft = posEnd;
         this.currentSlidePos = slideEnd;
+        this.blocked = false;
         clearInterval(interval);
       }
       position = this.easeOutSine(t, posInit, c, 380);

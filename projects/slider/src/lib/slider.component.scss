@@ -320,3 +320,15 @@ $a-size: 0.0063rem;
     left: auto;
   }
 }
+
+@media #{$mobile-tablet-portrait} {
+
+  .line-1, .line-3  {
+    width: 0.0938rem;
+  }
+
+  .line-2, .line-4 {
+    height: 0.0938rem;
+  }
+
+}
