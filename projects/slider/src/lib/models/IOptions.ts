@@ -1,3 +1,7 @@
+import { BulletType } from './bullet-type.enum';
+import { AnimationType } from './animation-type.enum';
+
 export interface IOptions {
-  animation?: string;
+  animationType?: AnimationType;
+  bulletType?: BulletType;
 }

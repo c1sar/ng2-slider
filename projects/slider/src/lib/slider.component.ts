@@ -1,48 +1,56 @@
 // Angular
 import {
-  Component, OnInit, Input, ElementRef, EventEmitter,
-  ViewChild, AfterViewInit, HostListener, Output
+  Component, Input, ElementRef, EventEmitter,
+  ViewChild, AfterViewInit, HostListener, Output, OnDestroy
 } from '@angular/core';
 
 // Models
 import { ISlide } from './models/ISlide';
 import { ISliderEvent } from './models/ISliderEvent';
 import { IOptions } from './models/IOptions';
+import { BulletType } from './models/bullet-type.enum';
 
 @Component({
   selector: 'lib-slider',
   templateUrl: './slider.component.html',
   styleUrls: ['./slider.component.scss']
 })
-export class SliderComponent implements OnInit, AfterViewInit {
+export class SliderComponent implements AfterViewInit, OnDestroy {
 
   @Input() slides: ISlide[];
   @Input() squareBullets: boolean;
-  @Input() option: IOptions = { animation: null };
-  @Output() clickButton: EventEmitter<any> = new EventEmitter<any>();
+  @Input() option: IOptions = { animationType: null, bulletType: BulletType.CIRCLE };
+  @Output() clickButton: EventEmitter<ISlide> = new EventEmitter<ISlide>();
 
   @ViewChild('sliderSection') sliderSection: ElementRef;
-  sliderElement: HTMLElement;
+
+  sliderContainerElement: HTMLElement;
   isDragging: boolean = false;
   posSlider: ISliderEvent = {};
   lastScrollLeft: number = 0;
-  slideNumber: number = 4;
+  slidesNumber: number = 4;
   currentSlidePos: number = 1;
   blocked: boolean = false;
 
+  movementInterval: number;
+
   constructor() { }
 
-  ngOnInit() {
+  ngAfterViewInit(): void {
+    this.slidesNumber = this.slides.length;
+    this.sliderContainerElement = this.sliderSection.nativeElement as HTMLElement;
+    this.movementInterval = window.setInterval(() => {
+      
+    }, 500);
   }
 
-  ngAfterViewInit(): void {
-    this.slideNumber = this.slides.length;
-    this.sliderElement = this.sliderSection.nativeElement as HTMLElement;
+  ngOnDestroy() {
+    clearInterval(this.movementInterval);
   }
 
   setSlide(numberSlide: number) {
-    const width = this.sliderElement.clientWidth;
-    this.sliderElement.scrollLeft = width * (numberSlide - 1);
+    const width = this.sliderContainerElement.clientWidth;
+    this.sliderContainerElement.scrollLeft = width * (numberSlide - 1);
     this.currentSlidePos = numberSlide;
     setTimeout(() => {
       this.blocked = false;
@@ -70,25 +78,15 @@ export class SliderComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const width = this.sliderElement.scrollWidth - this.sliderElement.clientWidth;
-    const newScrollLeftPosition = this.sliderElement.scrollLeft - e.movementX;
+    const width = this.sliderContainerElement.scrollWidth - this.sliderContainerElement.clientWidth;
+    const newScrollLeftPosition = this.sliderContainerElement.scrollLeft - e.movementX;
 
     if ((newScrollLeftPosition >= 0) && (newScrollLeftPosition <= width)) {
-      this.sliderElement.scrollLeft = newScrollLeftPosition;
+      this.sliderContainerElement.scrollLeft = newScrollLeftPosition;
     }
   }
 
-  @HostListener('mouseout', ['$event']) onMouseOut(e: MouseEvent) {
-    if ((this.blocked) || (this.validateElementBullet(e)) || (e.relatedTarget == null)
-    || ((e.relatedTarget as HTMLElement).className === 'bullet-container')
-    ) {
-      return;
-    }
-    this.isDragging = false;
-    this.setSlideWidthAnimation(this.currentSlidePos);
-  }
-
-  @HostListener('mouseup', ['$event']) onMouseUp(e: MouseEvent) {
+  @HostListener('window:mouseup', ['$event']) onMouseUp(e: MouseEvent) {
     if (this.blocked) {
       return;
     }
@@ -105,7 +103,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
     }
     this.isDragging = true;
     this.posSlider.posInitX = e.touches[0].clientX;
-    this.posSlider.scrollInit = this.sliderElement.scrollLeft;
+    this.posSlider.scrollInit = this.sliderContainerElement.scrollLeft;
   }
 
   @HostListener('touchmove', ['$event']) onTouchMove(e) {
@@ -113,17 +111,17 @@ export class SliderComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const width = this.sliderElement.scrollWidth - this.sliderElement.clientWidth;
+    const width = this.sliderContainerElement.scrollWidth - this.sliderContainerElement.clientWidth;
     const dif = e.touches[0].clientX - this.posSlider.posInitX;
     this.posSlider.posEndX = e.touches[0].clientX;
     const newScrollLeftPosition = this.posSlider.scrollInit - dif;
 
     if ((newScrollLeftPosition >= 0) && (newScrollLeftPosition <= width)) {
-      this.sliderElement.scrollLeft = newScrollLeftPosition;
+      this.sliderContainerElement.scrollLeft = newScrollLeftPosition;
     }
   }
 
-  @HostListener('touchend', ['$event']) onTouchEnd(e) {
+  @HostListener('window:touchend', ['$event']) onTouchEnd(e) {
     if ((this.blocked) || (this.validateElementBullet(e))) {
       return;
     }
@@ -132,14 +130,14 @@ export class SliderComponent implements OnInit, AfterViewInit {
   }
 
   private move() {
-    const minMovement = this.sliderElement.clientWidth * 0.18;
+    const minMovement = this.sliderContainerElement.clientWidth * 0.18;
 
     if (Math.abs(this.posSlider.posEndX - this.posSlider.posInitX) < minMovement) {
       this.setSlideWidthAnimation(this.currentSlidePos);
       return;
     }
 
-    if ((this.posSlider.posEndX < this.posSlider.posInitX) && (this.currentSlidePos < this.slideNumber)) {
+    if ((this.posSlider.posEndX < this.posSlider.posInitX) && (this.currentSlidePos < this.slidesNumber)) {
       this.setSlideWidthAnimation(this.currentSlidePos + 1);
     } else if ((this.currentSlidePos > 1) && (this.posSlider.posEndX > this.posSlider.posInitX)) {
       this.setSlideWidthAnimation(this.currentSlidePos - 1);
@@ -148,24 +146,24 @@ export class SliderComponent implements OnInit, AfterViewInit {
 
   setSlideWidthAnimation(slideEnd) {
     let t = 0;
-    const posInit = this.sliderElement.scrollLeft;
-    const posEnd = this.sliderElement.clientWidth * (slideEnd - 1);
+    const posInit = this.sliderContainerElement.scrollLeft;
+    const posEnd = this.sliderContainerElement.clientWidth * (slideEnd - 1);
     const c = posEnd - posInit;
     let position = 0;
     const interval = setInterval(() => {
       if (t > 380) {
-        this.sliderElement.scrollLeft = posEnd;
+        this.sliderContainerElement.scrollLeft = posEnd;
         this.currentSlidePos = slideEnd;
         this.blocked = false;
         clearInterval(interval);
       }
       position = this.easeOutSine(t, posInit, c, 380);
-      this.sliderElement.scrollLeft = position;
+      this.sliderContainerElement.scrollLeft = position;
       t = t + 5;
     }, 5);
   }
 
-  easeOutSine(t, b, c, d) {
+  easeOutSine(t: number, b: number, c: number, d: number): number {
     return c * Math.sin(t / d * (Math.PI / 2)) + b;
   }
 
@@ -173,8 +171,8 @@ export class SliderComponent implements OnInit, AfterViewInit {
     if (e.target) {
       const element = e.target as HTMLElement;
       if ((element.className === 'bullet') || (element.className === 'bullet-container')
-      || (element.className === 'bullet active') || (element.className === 'bullet square')
-      || (element.className === 'bullet square active')) {
+        || (element.className === 'bullet active') || (element.className === 'bullet square')
+        || (element.className === 'bullet square active')) {
         return true;
       }
     }

@@ -33,8 +33,8 @@ export class AppComponent {
     }
   ];
 
-  option: IOptions = {
-    animation: 'fixed'
-  };
+  // option: IOptions = {
+  //   animation: 'fixed'
+  // };
 
 }
