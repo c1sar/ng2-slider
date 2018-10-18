@@ -47,10 +47,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
     this.slidesNumber = this.slides.length;
     this.timeBySlide = (!this.option.timeBySlide || (this.option.timeBySlide < 2000)) ? 5000 : this.option.timeBySlide;
     this.sliderContainerElement = this.sliderSection.nativeElement as HTMLElement;
-    this.movementInterval = window.setInterval(() => {
-      const newPos = (this.currentSlidePos === this.slidesNumber) ? 1 : this.currentSlidePos + 1;
-      this.setSlideWidthAnimation(newPos);
-    }, this.timeBySlide);
+    this.createSliderInterval();
   }
 
   ngOnDestroy(): void {
@@ -86,6 +83,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
   bulletSetSlide(slideEnd: number) {
     if (!this.isOnAnimation) {
       this.setSlideWidthAnimation(slideEnd);
+      this.createSliderInterval();
     }
   }
 
@@ -103,6 +101,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
     this.isDragEvent = true;
     this.isDragging = true;
     this.posSlider.posInitX = e.clientX;
+    clearInterval(this.movementInterval);
   }
 
   @HostListener('mousemove', ['$event']) mouseMove(e: MouseEvent) {
@@ -124,6 +123,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
     this.isDragging = false;
     this.posSlider.posEndX = e.clientX;
     this.move();
+    this.createSliderInterval();
   }
 
 
@@ -137,6 +137,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
     this.isDragging = true;
     this.posSlider.posInitX = e.touches[0].clientX;
     this.posSlider.scrollInit = this.sliderContainerElement.scrollLeft;
+    clearInterval(this.movementInterval);
   }
 
   @HostListener('touchmove', ['$event']) onTouchMove(e) {
@@ -160,6 +161,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
     }
     this.isDragging = false;
     this.move();
+    this.createSliderInterval();
   }
 
   private move() {
@@ -208,4 +210,11 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
     return c * Math.sin(t / d * (Math.PI / 2)) + b;
   }
 
+  private createSliderInterval() {
+    clearInterval(this.movementInterval);
+    this.movementInterval = window.setInterval(() => {
+      const newPos = (this.currentSlidePos === this.slidesNumber) ? 1 : this.currentSlidePos + 1;
+      this.setSlideWidthAnimation(newPos);
+    }, this.timeBySlide);
+  }
 }
