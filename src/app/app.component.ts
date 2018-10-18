@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ISlide } from 'projects/slider/src/lib/models/ISlide';
 import { IOptions } from 'projects/slider/src/lib/models/IOptions';
+import { AnimationType } from 'projects/slider/src/lib/models/animation-type.enum';
+import { BulletType } from 'projects/slider/src/lib/models/bullet-type.enum';
 
 @Component({
   selector: 'app-root',
@@ -33,8 +35,10 @@ export class AppComponent {
     }
   ];
 
-  // option: IOptions = {
-  //   animation: 'fixed'
-  // };
+  option: IOptions = {
+    animationType:  AnimationType.FIXED,
+    bulletType: BulletType.SQUARE,
+    timeBySlide: 4000
+  };
 
 }

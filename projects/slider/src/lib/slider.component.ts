@@ -9,6 +9,7 @@ import { ISlide } from './models/ISlide';
 import { ISliderEvent } from './models/ISliderEvent';
 import { IOptions } from './models/IOptions';
 import { BulletType } from './models/bullet-type.enum';
+import { AnimationType } from './models/animation-type.enum';
 
 const isMobile = navigator.userAgent.match(
   /(iPhone|iPod|iPad|Android|webOS|BlackBerry|IEMobile|Opera Mini)/i);
@@ -38,6 +39,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
   timeBySlide: number;
 
   bulletType = BulletType;
+  animationType = AnimationType;
 
   movementInterval: number;
 
