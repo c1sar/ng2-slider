@@ -19,6 +19,11 @@
 
 <section class="bullet-container">
   <span class="bullet" *ngFor="let x of slides; index as i;"
-  [class.square]="squareBullets"
-  [class.active]="i+1==currentSlidePos" (click)="setSlideWidthAnimation(i+1)"></span>
+  [class.square]="option.bulletType===bulletType.SQUARE"
+  [class.active]="i+1==currentSlidePos" 
+  (click)="bulletSetSlide(i+1)" 
+  (mouseenter)="bulletMouseEnter($event)" 
+  (mouseleave)="bulletMouseLeave()"
+  (touchstart)="bulletTouchStart($event)"
+  (touchend)="bulletTouchEnd()"></span>
 </section>

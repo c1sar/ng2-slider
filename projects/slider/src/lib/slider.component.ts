@@ -10,6 +10,9 @@ import { ISliderEvent } from './models/ISliderEvent';
 import { IOptions } from './models/IOptions';
 import { BulletType } from './models/bullet-type.enum';
 
+const isMobile = navigator.userAgent.match(
+  /(iPhone|iPod|iPad|Android|webOS|BlackBerry|IEMobile|Opera Mini)/i);
+
 @Component({
   selector: 'lib-slider',
   templateUrl: './slider.component.html',
@@ -18,19 +21,22 @@ import { BulletType } from './models/bullet-type.enum';
 export class SliderComponent implements AfterViewInit, OnDestroy {
 
   @Input() slides: ISlide[];
-  @Input() squareBullets: boolean;
   @Input() option: IOptions = { animationType: null, bulletType: BulletType.CIRCLE };
   @Output() clickButton: EventEmitter<ISlide> = new EventEmitter<ISlide>();
 
   @ViewChild('sliderSection') sliderSection: ElementRef;
 
   sliderContainerElement: HTMLElement;
-  isDragging: boolean = false;
   posSlider: ISliderEvent = {};
-  lastScrollLeft: number = 0;
-  slidesNumber: number = 4;
+
+  slidesNumber: number;
   currentSlidePos: number = 1;
-  blocked: boolean = false;
+  isOnBullet: boolean = false;
+  isOnAnimation: boolean = false;
+  isDragEvent: boolean = true;
+  isDragging: boolean = false;
+
+  bulletType = BulletType;
 
   movementInterval: number;
 
@@ -40,7 +46,6 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
     this.slidesNumber = this.slides.length;
     this.sliderContainerElement = this.sliderSection.nativeElement as HTMLElement;
     this.movementInterval = window.setInterval(() => {
-      
     }, 500);
   }
 
@@ -48,13 +53,36 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
     clearInterval(this.movementInterval);
   }
 
-  setSlide(numberSlide: number) {
-    const width = this.sliderContainerElement.clientWidth;
-    this.sliderContainerElement.scrollLeft = width * (numberSlide - 1);
-    this.currentSlidePos = numberSlide;
-    setTimeout(() => {
-      this.blocked = false;
-    }, 200);
+  bulletMouseEnter(e: Event) {
+    if (!isMobile) {
+      e.stopPropagation();
+      this.isOnBullet = true;
+    }
+  }
+
+  bulletMouseLeave() {
+    if (!isMobile) {
+      this.isOnBullet = false;
+    }
+  }
+
+  bulletTouchStart(e: Event) {
+    if (isMobile) {
+      e.stopPropagation();
+      this.isOnBullet = true;
+    }
+  }
+
+  bulletTouchEnd() {
+    if (isMobile) {
+      this.isOnBullet = false;
+    }
+  }
+
+  bulletSetSlide(slideEnd: number) {
+    if (!this.isOnAnimation) {
+      this.setSlideWidthAnimation(slideEnd);
+    }
   }
 
   clickEvent(slide: ISlide) {
@@ -63,21 +91,20 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
 
   @HostListener('mousedown', ['$event']) onMouseDown(e: MouseEvent) {
     document.getSelection().empty();
-    if (this.validateElementBullet(e)) {
-      e.preventDefault();
-      this.blocked = true;
+
+    if ((this.isOnBullet) || (this.isOnAnimation) || (isMobile)) {
       return;
     }
-    this.blocked = false;
+
+    this.isDragEvent = true;
     this.isDragging = true;
     this.posSlider.posInitX = e.clientX;
   }
 
   @HostListener('mousemove', ['$event']) mouseMove(e: MouseEvent) {
-    if ((!this.isDragging) || (this.blocked)) {
+    if ((!this.isDragging) || (this.isOnAnimation) || (isMobile)) {
       return;
     }
-
     const width = this.sliderContainerElement.scrollWidth - this.sliderContainerElement.clientWidth;
     const newScrollLeftPosition = this.sliderContainerElement.scrollLeft - e.movementX;
 
@@ -87,7 +114,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
   }
 
   @HostListener('window:mouseup', ['$event']) onMouseUp(e: MouseEvent) {
-    if (this.blocked) {
+    if ((this.isOnAnimation) || (isMobile)) {
       return;
     }
     this.isDragging = false;
@@ -98,16 +125,18 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
 
   @HostListener('touchstart', ['$event']) onTouchStart(e) {
     document.getSelection().empty();
-    if (this.blocked) {
+    if ((this.isOnBullet) || (this.isOnAnimation)) {
       return;
     }
+
+    this.isDragEvent = true;
     this.isDragging = true;
     this.posSlider.posInitX = e.touches[0].clientX;
     this.posSlider.scrollInit = this.sliderContainerElement.scrollLeft;
   }
 
   @HostListener('touchmove', ['$event']) onTouchMove(e) {
-    if ((!this.isDragging) || (this.blocked)) {
+    if ((!this.isDragging) || (this.isOnAnimation)) {
       return;
     }
 
@@ -121,8 +150,8 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  @HostListener('window:touchend', ['$event']) onTouchEnd(e) {
-    if ((this.blocked) || (this.validateElementBullet(e))) {
+  @HostListener('touchend', ['$event']) onTouchEnd(e) {
+    if (this.isOnAnimation) {
       return;
     }
     this.isDragging = false;
@@ -130,6 +159,10 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
   }
 
   private move() {
+    if ((!this.isDragEvent) || (this.isOnAnimation)) {
+      return;
+    }
+
     const minMovement = this.sliderContainerElement.clientWidth * 0.18;
 
     if (Math.abs(this.posSlider.posEndX - this.posSlider.posInitX) < minMovement) {
@@ -144,7 +177,10 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+
+
   setSlideWidthAnimation(slideEnd) {
+    this.isOnAnimation = true;
     let t = 0;
     const posInit = this.sliderContainerElement.scrollLeft;
     const posEnd = this.sliderContainerElement.clientWidth * (slideEnd - 1);
@@ -154,7 +190,8 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
       if (t > 380) {
         this.sliderContainerElement.scrollLeft = posEnd;
         this.currentSlidePos = slideEnd;
-        this.blocked = false;
+        this.isOnAnimation = false;
+        this.isDragEvent = false;
         clearInterval(interval);
       }
       position = this.easeOutSine(t, posInit, c, 380);
@@ -165,18 +202,6 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
 
   easeOutSine(t: number, b: number, c: number, d: number): number {
     return c * Math.sin(t / d * (Math.PI / 2)) + b;
-  }
-
-  private validateElementBullet(e: Event): boolean {
-    if (e.target) {
-      const element = e.target as HTMLElement;
-      if ((element.className === 'bullet') || (element.className === 'bullet-container')
-        || (element.className === 'bullet active') || (element.className === 'bullet square')
-        || (element.className === 'bullet square active')) {
-        return true;
-      }
-    }
-    return false;
   }
 
 }
