@@ -35,6 +35,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
   isOnAnimation: boolean = false;
   isDragEvent: boolean = true;
   isDragging: boolean = false;
+  timeBySlide: number;
 
   bulletType = BulletType;
 
@@ -44,12 +45,15 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.slidesNumber = this.slides.length;
+    this.timeBySlide = (!this.option.timeBySlide || (this.option.timeBySlide < 2000)) ? 5000 : this.option.timeBySlide;
     this.sliderContainerElement = this.sliderSection.nativeElement as HTMLElement;
     this.movementInterval = window.setInterval(() => {
-    }, 500);
+      const newPos = (this.currentSlidePos === this.slidesNumber) ? 1 : this.currentSlidePos + 1;
+      this.setSlideWidthAnimation(newPos);
+    }, this.timeBySlide);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     clearInterval(this.movementInterval);
   }
 

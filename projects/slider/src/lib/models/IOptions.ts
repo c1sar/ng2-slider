@@ -4,4 +4,5 @@ import { AnimationType } from './animation-type.enum';
 export interface IOptions {
   animationType?: AnimationType;
   bulletType?: BulletType;
+  timeBySlide?: number;
 }
