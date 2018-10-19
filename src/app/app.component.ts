@@ -37,7 +37,7 @@ export class AppComponent {
 
   option: IOptions = {
     animationType:  AnimationType.FIXED,
-    bulletType: BulletType.SQUARE,
+    bulletType: BulletType.NONE,
     timeBySlide: 4000
   };
 

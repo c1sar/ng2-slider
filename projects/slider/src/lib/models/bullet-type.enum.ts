@@ -1,4 +1,5 @@
 export enum BulletType {
   CIRCLE = 'circle',
-  SQUARE = 'square'
+  SQUARE = 'square',
+  NONE = 'none'
 }

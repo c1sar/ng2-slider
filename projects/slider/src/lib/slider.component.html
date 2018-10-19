@@ -17,7 +17,7 @@
   </div>
 </section>
 
-<section class="bullet-container">
+<section *ngIf="option.bulletType!==bulletType.NONE" class="bullet-container">
   <span class="bullet" *ngFor="let x of slides; index as i;"
   [class.square]="option.bulletType===bulletType.SQUARE"
   [class.active]="i+1==currentSlidePos" 
