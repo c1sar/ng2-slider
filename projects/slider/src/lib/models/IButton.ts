@@ -1,4 +1,4 @@
 export class IButton {
-  url: string;
-  text: string;
+  url?: string;
+  text?: string;
 }

@@ -1,7 +1,7 @@
 // Angular
 import {
   Component, Input, ElementRef, EventEmitter,
-  ViewChild, AfterViewInit, HostListener, Output, OnDestroy
+  ViewChild, AfterViewInit, HostListener, Output, OnDestroy, PLATFORM_ID, Inject
 } from '@angular/core';
 
 // Models
@@ -10,9 +10,7 @@ import { ISliderEvent } from './models/ISliderEvent';
 import { IOptions } from './models/IOptions';
 import { BulletType } from './models/bullet-type.enum';
 import { AnimationType } from './models/animation-type.enum';
-
-const isMobile = navigator.userAgent.match(
-  /(iPhone|iPod|iPad|Android|webOS|BlackBerry|IEMobile|Opera Mini)/i);
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'lib-slider',
@@ -37,13 +35,21 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
   isDragEvent: boolean = true;
   isDragging: boolean = false;
   timeBySlide: number;
+  isMobile;
+  isBrowser: boolean;
 
   bulletType = BulletType;
   animationType = AnimationType;
 
   movementInterval: number;
 
-  constructor() { }
+  constructor(@Inject(PLATFORM_ID) private platformId) {
+    this.isBrowser = isPlatformBrowser(platformId);
+    if (this.isBrowser) {
+      this.isMobile = navigator.userAgent.match(
+        /(iPhone|iPod|iPad|Android|webOS|BlackBerry|IEMobile|Opera Mini)/i);
+    }
+  }
 
   ngAfterViewInit(): void {
     this.slidesNumber = this.slides.length;
@@ -57,27 +63,27 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
   }
 
   bulletMouseEnter(e: Event) {
-    if (!isMobile) {
+    if (!this.isMobile) {
       e.stopPropagation();
       this.isOnBullet = true;
     }
   }
 
   bulletMouseLeave() {
-    if (!isMobile) {
+    if (!this.isMobile) {
       this.isOnBullet = false;
     }
   }
 
   bulletTouchStart(e: Event) {
-    if (isMobile) {
+    if (this.isMobile) {
       e.stopPropagation();
       this.isOnBullet = true;
     }
   }
 
   bulletTouchEnd() {
-    if (isMobile) {
+    if (this.isMobile) {
       this.isOnBullet = false;
     }
   }
@@ -96,7 +102,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
   @HostListener('mousedown', ['$event']) onMouseDown(e: MouseEvent) {
     document.getSelection().empty();
 
-    if ((this.isOnBullet) || (this.isOnAnimation) || (isMobile)) {
+    if ((this.isOnBullet) || (this.isOnAnimation) || (this.isMobile)) {
       return;
     }
 
@@ -107,7 +113,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
   }
 
   @HostListener('mousemove', ['$event']) mouseMove(e: MouseEvent) {
-    if ((!this.isDragging) || (this.isOnAnimation) || (isMobile)) {
+    if ((!this.isDragging) || (this.isOnAnimation) || (this.isMobile)) {
       return;
     }
     const width = this.sliderContainerElement.scrollWidth - this.sliderContainerElement.clientWidth;
@@ -119,7 +125,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
   }
 
   @HostListener('window:mouseup', ['$event']) onMouseUp(e: MouseEvent) {
-    if ((this.isOnAnimation) || (isMobile)) {
+    if ((this.isOnAnimation) || (this.isMobile)) {
       return;
     }
     this.isDragging = false;
