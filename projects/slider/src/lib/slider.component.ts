@@ -46,7 +46,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
   constructor(@Inject(PLATFORM_ID) private platformId) {
     this.isBrowser = isPlatformBrowser(platformId);
     if (this.isBrowser) {
-      this.isMobile = navigator.userAgent.match(
+      this.isMobile = window.navigator.userAgent.match(
         /(iPhone|iPod|iPad|Android|webOS|BlackBerry|IEMobile|Opera Mini)/i);
     }
   }
