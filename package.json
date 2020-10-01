@@ -47,7 +47,7 @@
     "@angular/compiler-cli": "^7.2.16",
     "@angular/language-service": "^7.2.16",
     "@types/node": "~8.9.4",
-    "codelyzer": "~4.2.1",
+    "codelyzer": "^6.0.0",
     "ng-packagr": "^3.0.0-rc.3",
     "ts-node": "~5.0.1",
     "tslib": "^1.7.1",
