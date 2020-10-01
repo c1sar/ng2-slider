@@ -23,7 +23,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
   @Input() option: IOptions = { animationType: null, bulletType: BulletType.CIRCLE };
   @Output() clickButton: EventEmitter<ISlide> = new EventEmitter<ISlide>();
 
-  @ViewChild('sliderSection') sliderSection: ElementRef;
+  @ViewChild('sliderSection', { static: true }) sliderSection: ElementRef;
 
   sliderContainerElement: HTMLElement;
   posSlider: ISliderEvent = {};
