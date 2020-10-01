@@ -22,9 +22,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -45,10 +43,11 @@
     "@angular/cli": "^10.1.4",
     "@angular/compiler-cli": "^10.1.4",
     "@angular/language-service": "^10.1.4",
+    "@schematics/angular": "^10.1.4",
     "@types/node": "~8.9.4",
     "codelyzer": "^6.0.0",
     "ng-packagr": "^10.1.0",
-    "ts-node": "~5.0.1",
+    "ts-node": "^9.0.0",
     "tslib": "^2.0.0",
     "tslint": "~6.1.0",
     "typescript": "~4.0.3"

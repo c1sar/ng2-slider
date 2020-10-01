@@ -7,7 +7,7 @@ import { BulletType } from 'projects/slider/src/lib/models/bullet-type.enum';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
 
